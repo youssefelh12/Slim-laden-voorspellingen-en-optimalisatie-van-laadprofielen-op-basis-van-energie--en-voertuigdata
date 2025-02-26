@@ -1,18 +1,29 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 from statsmodels.tsa.seasonal import seasonal_decompose
 
-# Read your data with proper datetime parsing
-df = pd.read_csv('./Data/15min2024_consumption.csv', decimal=',', parse_dates=['Date'], index_col='Date')
-data = df.sort_values(by="Date")
+# Read your data, parsing the 'Hour' column as datetime and using it as the index
+df = pd.read_csv('./api_data/hourly_api_data.csv', parse_dates=['Hour'], index_col='Hour')
 
-# Choose one series, e.g., "Chargers (L1) [kW]"
-series = pd.to_numeric(df["Chargers (L1) [kW]"], errors='coerce')
+# Sort the DataFrame by the datetime index
+df = df.sort_index()
 
-# Decompose the series (assuming an additive model and known seasonal period)
-# For 15-minute data, if you expect a daily seasonality: period = 24*4 = 96
-decomposition = seasonal_decompose(series.dropna(), model='additive', period=96)
+# Optionally, filter for a specific measurement.
+# Here we select the first unique measurement found in the 'Measurement' column.
+selected_measurement = df['Measurement'].unique()[0]
+print(f"Selected Measurement: {selected_measurement}")
+
+# Filter the data for the selected measurement and select the 'Consumption' column
+series_data = df[df['Measurement'] == selected_measurement]['Consumption']
+
+# Ensure the data is numeric
+series = pd.to_numeric(series_data, errors='coerce')
+
+# Decompose the series. For hourly data with daily seasonality, set period = 24.
+decomposition = seasonal_decompose(series.dropna(), model='additive', period=24)
+
+# Plot the decomposition
 fig = decomposition.plot()
 fig.set_size_inches(14, 10)
+plt.suptitle(f'Seasonal Decomposition of Consumption for {selected_measurement}', fontsize=16)
 plt.show()
