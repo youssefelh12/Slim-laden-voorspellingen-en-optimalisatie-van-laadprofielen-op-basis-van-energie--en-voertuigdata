@@ -213,7 +213,7 @@ forecast_df = pd.DataFrame({
 })
 forecast_df["Difference"] = forecast_df["Predicted_Charger_Consumption_kWh"] - forecast_df["Real_Consumption_kWh"]
 forecast_df = forecast_df.round(4)
-forecast_df.to_csv("results/arimax/predicted_charger_values_kwh.csv", index=False)
+#forecast_df.to_csv("results/arimax/predicted_charger_values_kwh.csv", index=False)
 print("Predicted values have been saved to 'predicted_charger_values_kwh.csv'.")
 
 # -------------------------------

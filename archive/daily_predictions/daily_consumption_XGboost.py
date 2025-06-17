@@ -277,7 +277,7 @@ def main():
     results_dir = "results/daily_xgboost"
     create_results_directory(results_dir)
     
-    consumption_file = 'api_data/daily_building_consumption_0624.csv'
+    consumption_file = 'api_data/daily_cleaned3.csv'
     temp_file = 'api_data/daily_temperature_data.csv'
     
     # Load consumption data and display basic information
@@ -320,8 +320,7 @@ def main():
         "dayofmonth", "weekofyear", "day_of_week_sin", "day_of_week_cos", 
         "is_weekend", "is_festive", "is_summer", "is_winter", 
         "temperature_2m_mean", "temp_mean_lag_1d", "temp_mean_rolling_3d",
-        "consumption_lag_1d", "consumption_lag_7d", "consumption_lag_30d", 
-        "consumption_lag_365d", "consumption_lag_14d", "consumption_lag_21d",
+        
         "rolling_avg_3d", "rolling_std_3d"
     ]
     

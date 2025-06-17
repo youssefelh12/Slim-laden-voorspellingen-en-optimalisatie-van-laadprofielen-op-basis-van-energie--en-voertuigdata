@@ -188,9 +188,9 @@ def plot_boxplot_comparison(forecast_df):
         var_name='Type',
         value_name='Consumption'
     )
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 5))
     sns.boxplot(x='Type', y='Consumption', data=melted_df)
-    plt.title("Comparison of Real vs Forecasted Daily Consumption")
+    plt.title("Sarimax: dagelijkse voorspelling")
     plt.xlabel("Consumption Type")
     plt.ylabel("Daily Consumption (kWh)")
     plt.tight_layout()
@@ -211,22 +211,36 @@ def calculate_smape(y_true, y_pred):
     return 100 * np.mean(2 * np.abs(y_pred - y_true) / denominator)
 
 def compute_performance_metrics(y_true, y_pred):
-    mae = mean_absolute_error(y_true, y_pred)
-    mse = mean_squared_error(y_true, y_pred)
+    mae  = mean_absolute_error(y_true, y_pred)
+    mse  = mean_squared_error(y_true, y_pred)
     rmse = np.sqrt(mse)
     mape = calculate_mape(y_true.values, y_pred.values)
     smape = calculate_smape(y_true.values, y_pred.values)
-    r2 = r2_score(y_true, y_pred)
-    
+    r2   = r2_score(y_true, y_pred)
+
+    # --- NEW: MAE as a percentage of the mean actual ---
+    mae_pct = (mae / (y_true.mean() + 1e-10)) * 100      # avoid zero-division
+    # ---------------------------------------------------
+
     print("\nModel Performance Metrics (Original Scale):")
-    print(f"MAE:   {mae:.4f}")
-    print(f"MSE:   {mse:.4f}")
-    print(f"RMSE:  {rmse:.4f}")
-    print(f"MAPE:  {mape:.4f}%")
-    print(f"sMAPE: {smape:.4f}%")
-    print(f"R²:    {r2:.4f}")
-    
-    return {"MAE": mae, "MSE": mse, "RMSE": rmse, "MAPE": mape, "sMAPE": smape, "R2": r2}
+    print(f"MAE:       {mae:.4f}")
+    print(f"MAE %:     {mae_pct:.4f}%")                   # NEW line
+    print(f"MSE:       {mse:.4f}")
+    print(f"RMSE:      {rmse:.4f}")
+    print(f"MAPE:      {mape:.4f}%")
+    print(f"sMAPE:     {smape:.4f}%")
+    print(f"R²:        {r2:.4f}")
+
+    return {
+        "MAE": mae,
+        "MAE_percent": mae_pct,                            # NEW key
+        "MSE": mse,
+        "RMSE": rmse,
+        "MAPE": mape,
+        "sMAPE": smape,
+        "R2": r2
+    }
+
 
 def create_forecast_df(y_orig_test, y_pred):
     forecast_df = pd.DataFrame({
@@ -307,8 +321,7 @@ def main():
         "dayofmonth", "weekofyear", "day_of_week_sin", "day_of_week_cos", 
         "is_weekend", "is_festive", "is_summer", "is_winter", 
         "temperature_2m_mean", "temp_mean_lag_1d", "temp_mean_rolling_3d",
-        "consumption_lag_1d", "consumption_lag_7d", "consumption_lag_30d", 
-        "consumption_lag_365d", "consumption_lag_14d", "consumption_lag_21d",
+        
         "rolling_avg_3d", "rolling_std_3d",'is_terugkomdag'
     ]
     

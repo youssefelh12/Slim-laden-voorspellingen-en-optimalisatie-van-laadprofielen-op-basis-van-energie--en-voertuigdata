@@ -239,15 +239,4 @@ Month,Measurement,Phase,Consumption
 2025-01,Chargers achteraan,PHASEA,192733.8
 2025-01,Chargers achteraan,PHASEB,2013679.9
 2025-01,Chargers achteraan,PHASEC,2023860.8
-2025-02,Grid Organi lbc,PHASEA,4405058.6
-2025-02,Grid Organi lbc,PHASEB,4405058.6
-2025-02,Grid Organi lbc,PHASEC,3518326.9
-2025-02,Chargers,PHASEA,3530981.1
-2025-02,Chargers,PHASEB,701647.7
-2025-02,Chargers,PHASEC,695778.6
-2025-02,Solar,PHASEA,622827.2
-2025-02,Solar,PHASEB,210872.3
-2025-02,Solar,PHASEC,212263.9
-2025-02,Chargers achteraan,PHASEA,212179.2
-2025-02,Chargers achteraan,PHASEB,901785.8
-2025-02,Chargers achteraan,PHASEC,941627.8
+

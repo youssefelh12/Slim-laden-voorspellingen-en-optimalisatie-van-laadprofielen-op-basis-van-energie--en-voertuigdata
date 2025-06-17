@@ -4,7 +4,7 @@ from datetime import timedelta
 
 
 # Load the uploaded file
-path = "./Charging_data_cleaned.csv"
+path = "./charging_forecasts/Charging_data_cleaned.csv"
 df = pd.read_csv(path, parse_dates=['Date']).sort_values('Date').reset_index(drop=True)
 df.rename(columns={'Date':'Timestamp', 'Chargers':'kWh'}, inplace=True)
 

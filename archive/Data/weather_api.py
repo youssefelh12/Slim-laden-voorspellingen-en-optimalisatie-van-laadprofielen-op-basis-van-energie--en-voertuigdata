@@ -13,7 +13,7 @@ params = {
     "latitude": 51.15579,
     "longitude": 4.377204,
     "start_date": "2022-08-11",
-    "end_date": "2025-03-18",
+    "end_date": "2025-05-22",
     "daily": "temperature_2m_max,temperature_2m_min",
     "temperature_unit": "celsius",
     "timezone": "auto"  # Required for daily data
@@ -55,7 +55,7 @@ daily_data = {
 daily_dataframe = pd.DataFrame(data=daily_data)
 
 # Save to CSV
-daily_dataframe.to_csv('./api_data/daily_temperature_data.csv', index=False)
+daily_dataframe.to_csv('./api_data/daily_temperature_data2.csv', index=False)
 
 print("\nDaily Temperature Data:")
 print(daily_dataframe.head())
