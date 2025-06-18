@@ -21,15 +21,14 @@
 
 ```bash
 # 1. Clone and enter the repo
-$ git clone https://github.com/zeno-charged/hourly-forecast.git](https://github.com/youssefelh12/Slim-laden-voorspellingen-en-optimalisatie-van-laadprofielen-op-basis-van-energie--en-voertuigdata.git
-$ cd hourly-forecast
+$ git clone [https://github.com/youssefelh12/Slim-laden-voorspellingen-en-optimalisatie-van-laadprofielen-op-basis-van-energie--en-voertuigdata.git]
 
 # 2. Create & activate a virtual environment (recommended)
 $ python -m venv .venv
 $ source .venv/bin/activate      # On Windows: .venv\Scripts\activate
 
 # 3. Install the library and its dependencies
-#    a) As an editable dev install (preferred while hacking):
+#    a) As an editable dev install:
 $ pip install --upgrade pip
 $ pip install -e .               # uses pyproject.toml / setup.cfg if present
 #    b) From a consolidated requirements file (fallback):
@@ -37,8 +36,6 @@ $ pip install -r requirements.txt
 
 # 4. Run a 24‑hour forecast for a given date
 $ python Forecast_scripts/forecast_24h.py
-
-
 
 
 > **Python ≥3.10** is strongly recommended. The project leans on **pandas**, **scikit‑learn**, **xgboost**, **lightgbm**, **statsmodels**; installation may take a minute on first‑time setups.
