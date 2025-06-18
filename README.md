@@ -21,7 +21,7 @@
 
 ```bash
 # 1. Clone and enter the repo
-$ git clone https://github.com/zeno-charged/hourly-forecast.git
+$ git clone https://github.com/zeno-charged/hourly-forecast.git](https://github.com/youssefelh12/Slim-laden-voorspellingen-en-optimalisatie-van-laadprofielen-op-basis-van-energie--en-voertuigdata.git
 $ cd hourly-forecast
 
 # 2. Create & activate a virtual environment (recommended)
