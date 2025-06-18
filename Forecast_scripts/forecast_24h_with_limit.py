@@ -15,8 +15,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from statsmodels.graphics.tsaplots import plot_acf
 
 # ───────────────────────── config ───────────────────────────
-CHARGING_FILE   = "./charging_forecasts/Charging_data_hourly.csv"
-CALENDAR_FILE   = "./hourly_predictions/layout1_full_calendar_2023-2025.csv"
+CHARGING_FILE   = "./Forecast_scripts/Charging_data_hourly.csv"
+CALENDAR_FILE   = "./Forecast_scripts/layout1_full_calendar_2023-2025.csv"
 TOTAL_HEADCOUNT = 105
 SESSION_KWH     = 9.5
 ANCHOR_WEEKS    = 4        # weeks averaged for anchor
@@ -171,17 +171,7 @@ plt.plot(test_bt['ds'], test_bt['yhat'], label='Predicted', alpha=0.8)
 plt.legend(); plt.xlabel('Date'); plt.ylabel('kW')
 plt.title('Actual vs Predicted – 30-day Back-test'); plt.tight_layout(); plt.show()
 
-# 8c scatter
-plt.figure(figsize=(6,5))
-plt.scatter(test_bt['y'], test_bt['yhat'], alpha=0.3)
-lims=[test_bt[['y','yhat']].min().min(), test_bt[['y','yhat']].max().max()]
-plt.plot(lims, lims, 'k--'); plt.xlabel('Actual'); plt.ylabel('Predicted')
-plt.title('Predicted vs Actual (scatter)'); plt.tight_layout(); plt.show()
 
-# 8d CDF of MAE
-err_sorted = np.sort(test_bt['abs_err']); cdf=np.arange(len(err_sorted))/len(err_sorted)
-plt.figure(figsize=(6,4)); plt.plot(err_sorted, cdf)
-plt.xlabel('Abs Error (kW)'); plt.ylabel('CDF')
 plt.title('MAE Cumulative Distribution'); plt.tight_layout(); plt.show()
 
 # 8e feature importance
@@ -190,15 +180,16 @@ plt.barh(FEATURES, model.feature_importances_)
 plt.xlabel('Importance'); plt.title('XGBoost Feature Importance')
 plt.tight_layout(); plt.show()
 
-# 8f rolling 7-day R²
-roll_r2 = (test_bt.set_index('ds')['y']
-           .rolling('7D')
-           .corr(test_bt.set_index('ds')['yhat']))
-plt.figure(figsize=(10,4))
-plt.plot(roll_r2); plt.ylabel('R²'); plt.title('7-day Rolling R²')
-plt.tight_layout(); plt.show()
 
-# 8g residual ACF
+# 8h  ── total absolute-error per day ──────────────────────────
+daily_err = (test_bt
+             .set_index('ds')['abs_err']
+             .resample('1D')        # one row per day
+             .sum())                # or .mean() for daily-MAE
+
 plt.figure(figsize=(10,4))
-plot_acf(test_bt['y'] - test_bt['yhat'], lags=48)
-plt.title('Residual ACF (48 lags)'); plt.tight_layout(); plt.show()
+plt.plot(daily_err.index, daily_err.values, marker='o')
+plt.ylabel('Total Abs Error (kW)')
+plt.xlabel('Date')
+plt.title('Total Absolute Error per Day – 30-day Back-test')
+plt.tight_layout(); plt.show()

@@ -34,11 +34,11 @@ SESSION_KWH     = 9.5         # typical energy per charging session
 RANDOM_STATE    = 42
 
 # ────────────────────── user parameters ─────────────────────
-FORECAST_DATE = "2025-04-21"  # ← change to any YYYY‑MM‑DD
+FORECAST_DATE = "2025-03-18"  # ← change to any YYYY‑MM‑DD
 
 # ───────────────────────── config ───────────────────────────
-CHARGING_FILE   = "./charging_forecasts/Charging_data_hourly.csv"
-CALENDAR_FILE   = "./hourly_predictions/layout1_full_calendar_2023-2025.csv"
+CHARGING_FILE   = "./Forecast_scripts/Charging_data_hourly.csv"
+CALENDAR_FILE   = "./Forecast_scripts/layout1_full_calendar_2023-2025.csv"
 
 # ═════════════ 1. LOAD HISTORICAL DATA ═════════════
 df = (pd.read_csv(CHARGING_FILE)
@@ -254,3 +254,13 @@ else:
 plt.ylim(0, 100)
 
 plt.xlabel("Hour"); plt.ylabel("kW"); plt.legend(); plt.tight_layout(); plt.show()
+
+# ═════════════ 8b. SAVE 24-H PREDICTIONS TO CSV ═════════════
+# File will live alongside your other output files; change the folder if you prefer.
+OUT_FILE = f"./{FORECAST_DATE}_24h_forecast.csv"
+
+# Keep just the timestamp and the model prediction (add "y" if you also merged actuals)
+cols_to_save = ["ds", "yhat"] + (["y"] if "y" in forecast.columns else [])
+forecast[cols_to_save].to_csv(OUT_FILE, index=False)
+
+print(f"✔️  Saved 24-hour forecast to {OUT_FILE}")
